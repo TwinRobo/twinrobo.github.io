@@ -1,4 +1,5 @@
-"""Copy the TwinRobo Benchmark's results into the site: ``docs/benchmark/results.md``.
+"""Copy the TwinRobo Benchmark's results into the site: ``docs/benchmark/results.md`` and
+the figures (``docs/benchmark/figures/``).
 
     python tools/sync_benchmark.py [--bench ~/git/TwinRobo-Benchmark]
 
@@ -11,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import re
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -58,6 +60,13 @@ def main() -> None:
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(head + "\n" + body.lstrip())
     print("wrote", OUT.relative_to(SITE))
+    # the figures (bench.figures in the benchmark): charts in light and dark, image grids
+    figs = OUT.parent / "figures"
+    figs.mkdir(exist_ok=True)
+    for f in sorted((a.bench / "results" / "figures").glob("*")):
+        if f.suffix in (".png", ".jpg", ".svg"):
+            shutil.copyfile(f, figs / f.name)
+            print("copied", (figs / f.name).relative_to(SITE))
 
 
 if __name__ == "__main__":

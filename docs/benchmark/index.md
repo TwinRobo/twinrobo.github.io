@@ -20,6 +20,11 @@ benchmark works; whether real cameras rank the same way is the next step (see
       fills the reference's (a wide camera moves closer), which removes placement;
     - **optics only:** LIBERO's field of view with the camera's sensor resolution and
       lens blur, which removes framing and distortion.
+
+    ![One LIBERO scene through three cameras (rows) in the three conditions (columns)](figures/views.jpg)
+    *One scene through three cameras (rows: 70°, 90° and 110° wide) in the three conditions.
+    As mounted, the wider the camera, the smaller the scene; framed, each sees the same
+    workspace, the wide lenses with their barrel distortion.*
 - **Scenes.** 200 fixed LIBERO frames: LIBERO-Spatial demonstrations at three points of
   each episode, and the fixed initial layouts of LIBERO-Object, LIBERO-Goal and LIBERO-10
   (tabletops, a kitchen, a living room). Every image comes with the simulator's depth and
@@ -47,13 +52,9 @@ benchmark works; whether real cameras rank the same way is the next step (see
 As mounted, wide cameras find far fewer objects: they see the same scene smaller.
 Framed to see the same workspace, every color camera lands within the same few points.
 
-| Detection mAP50 | As mounted | Framed |
-|---|---|---|
-| Stereolabs ZED X 2.2 mm (110° wide) | 54.9 | 66.3 |
-| Intel RealSense D455 RGB (90°) | 55.2 | 62.8 |
-| Raspberry Pi Camera Module 3 Wide (100°) | 56.3 | 64.8 |
-| Raspberry Pi Camera Module 3 (66°) | 65.8 | 64.4 |
-| Intel RealSense D435 RGB (69°) | 65.4 | 62.9 |
+![Detection mAP50 per camera in the three conditions, with 95 % intervals](figures/detection.png#only-light)
+![Detection mAP50 per camera in the three conditions, with 95 % intervals](figures/detection-dark.png#only-dark)
+
 
 The framed values of all nine color cameras span 62.8 to 66.3, and their 95 % intervals
 overlap. Before comparing cameras, fix where they will be mounted.
@@ -65,11 +66,15 @@ with the workspace, edges included, where its barrel distortion is strongest, an
 depth error on the objects grows; without the distortion (optics only) it is back with
 the others.
 
-| Depth error on objects, Depth Anything V2 | Framed | Optics only |
-|---|---|---|
-| Stereolabs ZED X 2.2 mm | 9.6 % | 5.5 % |
-| Raspberry Pi Camera Module 3 Wide | 8.7 % | 5.9 % |
-| Intel RealSense D435 RGB (narrow) | 5.8 % | 5.9 % |
+![Depth error on the objects per camera in the three conditions, with 95 % intervals](figures/depth.png#only-light)
+![Depth error on the objects per camera in the three conditions, with 95 % intervals](figures/depth-dark.png#only-dark)
+
+The ZED X 2.2 mm goes from 5.5 % (optics only) to 9.6 % (framed), the Raspberry Pi
+Camera Module 3 Wide from 5.9 % to 8.7 %; narrow lenses barely change. Where the error
+appears, on one frame:
+
+![Depth Anything V2's error map on one frame for the ZED X 2.2 mm, framed and optics only](figures/depth_maps.png#only-light)
+![Depth Anything V2's error map on one frame for the ZED X 2.2 mm, framed and optics only](figures/depth_maps-dark.png#only-dark)
 
 Depth Pro shows the same: 40.3 % framed against 26.4 % optics only for the ZED X 2.2 mm.
 Undistorting wide-angle images before a depth model is worth it.
@@ -85,6 +90,9 @@ difference between cameras the benchmark measures consistently.
 OpenVLA was fine-tuned on LIBERO's camera (45° vertical). It sees a square center crop,
 so the vertical field of view is what changes its input:
 
+![OpenVLA task success against the camera's vertical field of view](figures/vla_fov.png#only-light)
+![OpenVLA task success against the camera's vertical field of view](figures/vla_fov-dark.png#only-dark)
+
 | Camera, as mounted | Vertical field of view | OpenVLA success |
 |---|---|---|
 | Intel RealSense D435 RGB | 42.5° | 87 % |
@@ -99,6 +107,15 @@ With LIBERO's field of view and each camera's lens only, the same policy succeed
 of the time (four cameras, 40-48 episodes each): the lens alone does not break it. The
 ZED X 4 mm does worse than its field of view alone suggests; why is open. A policy has to
 be fine-tuned for, or tested with, the camera it will run with.
+
+### Resolution sets how far a camera reads a marker
+
+The fiducial test uses every pixel (no model resizes the image), so pixel count and field
+of view show directly: the 12 MP Raspberry Pi Camera Module 3 finds the board out to
+3.1 m, the 1080p cameras to about 2 m, the wide 1-2 MP cameras to about 1 m.
+
+![Distance range at which each camera finds a 21 x 15 cm ChArUco board](figures/board_range.png#only-light)
+![Distance range at which each camera finds a 21 x 15 cm ChArUco board](figures/board_range-dark.png#only-dark)
 
 ### Some models react to the image format, not the camera
 
