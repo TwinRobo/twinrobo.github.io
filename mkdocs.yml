@@ -91,9 +91,7 @@ nav:
       - LIBERO and RoboCasa: api/robot_learning.md
       - Calibration: api/calibration.md
       - Validation: api/validation.md
-  - Benchmark:
-      - benchmark/index.md
-      - Results: benchmark/results.md
+  - Benchmark: benchmark/index.md
   - License: license.md
   - Development:
       - Project structure: development.md
