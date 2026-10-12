@@ -1,0 +1,8 @@
+{
+ "task": 3,
+ "trial": 0,
+ "left": "pinhole__pinhole",
+ "right": "camera__intel--realsense-d455--color",
+ "left_s": 4.15,
+ "right_s": 11.0
+}

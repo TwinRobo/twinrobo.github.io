@@ -16,13 +16,44 @@ TwinRobo renders simulated scenes through the actual optics of off-the-shelf cam
 so perception trained in simulation meets the same image on the robot.
 <a class="tr-why-link" href="why/">See why TwinRobo?</a></p>
 
-[Get started](getting-started.md){ .md-button .md-button--primary }
+[Try it live](https://ai4optics.com/twinrobo/studio){ .md-button .md-button--primary }
+[Get started](getting-started.md){ .md-button }
 [Browse cameras](catalog.md){ .md-button }
-[Try in Simulator](playground.md){ .md-button }
 
-![An Isaac Sim tabletop: the simulator's pinhole (left) and the Stereolabs ZED X 2.2 mm, every pixel ray-traced through its lens (right)](images/isaac-raycast.jpg)
+<div class="tr-compare tr-compare--hero" style="--pos: 50%">
+  <img src="assets/home/compare-camera.webp" width="640" height="400"
+       alt="A robot's wrist camera over a bin of groceries, through a real camera's lens (ray-traced)">
+  <img class="tr-compare__top" src="assets/home/compare-pinhole.webp"
+       width="640" height="400" alt="The same view through the simulator's pinhole">
+  <span class="tr-compare__tag tr-compare__tag--left">Pinhole</span>
+  <span class="tr-compare__tag tr-compare__tag--right">Real camera</span>
+  <input class="tr-compare__range" type="range" min="0" max="100" value="50"
+         aria-label="Slide between the pinhole and a real camera">
+</div>
 
-<p class="tr-caption">Isaac Sim, left: the simulator's pinhole. Right: a Stereolabs ZED X 2.2 mm, every pixel ray-traced through its lens.</p>
+<p class="tr-caption">Drag to compare: a robot's wrist camera in MuJoCo, the same frame, pose and field of
+view, through the simulator's pinhole and through a real camera's lens.</p>
+
+</div>
+
+<div class="tr-why" markdown>
+
+## Change the camera, and a robot policy drops from <span class="tr-grad">85 % to 0 %</span>
+
+<p class="tr-lead">OpenVLA solves 85 % of its LIBERO tasks through the pinhole camera it was
+trained with, and none through a real camera placed where that pinhole was. TwinRobo shows
+you that before your robot does. <a class="tr-why-link" href="benchmark/">See the benchmark</a></p>
+
+<figure class="tr-hero-video">
+  <video autoplay muted loop playsinline preload="metadata" poster="assets/home/hero-poster.jpg"
+         aria-label="The same robot task through a pinhole camera, where the policy succeeds, and through a real camera, where it fails">
+    <source src="assets/home/hero.mp4" type="video/mp4">
+  </video>
+</figure>
+
+<p class="tr-caption">OpenVLA on the same LIBERO task from the same start, seen through its own
+(third-person) camera: through the simulator's pinhole it succeeds (left); through a real camera
+at the same place it fails (right).</p>
 
 </div>
 

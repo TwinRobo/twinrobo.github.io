@@ -24,10 +24,10 @@ BANNER = """# Results
 !!! warning "Simulation only: these rank digital twins, not yet the real cameras"
     Every catalog lens is a surrogate (a published design scaled to the camera's focal
     length and f-number; vendors publish no prescriptions), and sensor noise is not
-    simulated. Differences between cameras that survive the *framed* and *optics only*
-    conditions are mostly within the 95 % intervals. Grounding mostly reflects how the
-    model handles each image's size and aspect, not the optics. The VLA column covers six
-    cameras, run with two TwinRobo-Core versions (see [Findings](index.md)).
+    simulated. The main tables put each camera on the robot's wrist; the third-person
+    tables below them are secondary (LIBERO's agent-view camera is not on the robot).
+    Grounding partly reflects how the model handles each image's size and aspect. See
+    [Findings](index.md).
 
 Benchmark commit `{bench}` · TwinRobo-Core `{core}` · copied {date}.
 """
@@ -49,7 +49,7 @@ def main() -> None:
     # repository-internal instructions do not apply on the site
     body = re.sub(r"\nRebuild: `\./run_all\.sh`.*\Z", "\n", body, flags=re.S)
     body = body.replace("(closed loop; `src/vla`)", "(closed loop)")
-    body = body.replace("### ", "## ", 3)  # the three condition tables are sections here
+    body = re.sub(r"^### ", "## ", body, flags=re.M)  # the condition tables are sections here
     head = BANNER.format(
         bench=git(a.bench, "rev-parse", "--short", "HEAD"),
         core=core.group(1).strip() if core else "?",
@@ -64,7 +64,7 @@ def main() -> None:
     figs = OUT.parent / "figures"
     figs.mkdir(exist_ok=True)
     for f in sorted((a.bench / "results" / "figures").glob("*")):
-        if f.suffix in (".png", ".jpg", ".svg"):
+        if f.suffix in (".png", ".jpg", ".svg", ".gif"):
             shutil.copyfile(f, figs / f.name)
             print("copied", (figs / f.name).relative_to(SITE))
 

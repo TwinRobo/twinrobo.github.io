@@ -50,6 +50,7 @@ extra_css:
 
 extra_javascript:
   - javascripts/catalog.js
+  - javascripts/home.js
 
 
 extra:
@@ -91,7 +92,9 @@ nav:
       - LIBERO and RoboCasa: api/robot_learning.md
       - Calibration: api/calibration.md
       - Validation: api/validation.md
-  - Benchmark: benchmark/index.md
+  - Benchmark:
+      - benchmark/index.md
+      - Results: benchmark/results.md
   - License: license.md
   - Development:
       - Project structure: development.md
