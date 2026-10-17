@@ -7,14 +7,10 @@ nav_icon: material/robot-industrial
 
 <h1 class="tr-sr-only">Try in Simulator</h1>
 
-Drive a robot through a real kitchen and record what any catalog camera sees, through its lens, in the browser:
+<div class="tr-demo" markdown="0"><iframe src="https://twinrobo.github.io/TwinRobo-Preview/" title="TwinRobo Preview" loading="lazy" allow="fullscreen"></iframe></div>
+<p class="tr-demo-cap"><a href="https://twinrobo.github.io/TwinRobo-Preview/" target="_blank" rel="noopener">Open full screen</a> · <a href="https://github.com/TwinRobo/TwinRobo-Preview" target="_blank" rel="noopener">TwinRobo-Preview</a> (precomputed with TwinRobo Studio; runs in the browser)</p>
 
-[Open the Capture Studio](https://ai4optics.com/twinrobo/studio){ .md-button .md-button--primary target="_blank" rel="noopener" }
-
-Or replay robot demos through catalog cameras:
-
-<div class="tr-demo" markdown="0"><iframe src="https://twinrobo.github.io/TwinRobo-Preview/vla/" title="TwinRobo Preview: demo replay" loading="lazy" allow="fullscreen"></iframe></div>
-<p class="tr-demo-cap"><a href="https://twinrobo.github.io/TwinRobo-Preview/vla/" target="_blank" rel="noopener">Open full screen</a> · <a href="https://github.com/TwinRobo/TwinRobo-Preview" target="_blank" rel="noopener">TwinRobo-Preview</a> (precomputed with TwinRobo Studio; runs in the browser)</p>
+[Try TwinRobo Studio live](https://ai4optics.com/twinrobo/studio){ .md-button .md-button--primary }
 
 ## Supported simulators
 
