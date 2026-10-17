@@ -16,7 +16,7 @@ TwinRobo renders simulated scenes through the actual optics of off-the-shelf cam
 so perception trained in simulation meets the same image on the robot.
 <a class="tr-why-link" href="why/">See why TwinRobo?</a></p>
 
-[Try it live](https://ai4optics.com/twinrobo/studio){ .md-button .md-button--primary }
+[Try it live](playground.md){ .md-button .md-button--primary }
 [Get started](getting-started.md){ .md-button }
 [Browse cameras](catalog.md){ .md-button }
 
