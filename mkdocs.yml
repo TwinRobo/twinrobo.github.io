@@ -104,6 +104,7 @@ nav:
 
 not_in_nav: |
   /partners.md
+  /live.md
 
 plugins:
   - search
