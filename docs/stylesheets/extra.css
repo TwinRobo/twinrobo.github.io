@@ -432,8 +432,10 @@
 .tr-demo {
   position: relative;
   width: 100%;
-  height: min(82vh, 780px);
-  min-height: 560px;
+  /* the window's height below the header, less the caption: the frame and its caption fill the view */
+  height: calc(100vh - 7rem);
+  height: calc(100dvh - 7rem);
+  min-height: 520px;
   border: 1px solid var(--tr-card-border);
   border-radius: 0.6rem;
   overflow: hidden;

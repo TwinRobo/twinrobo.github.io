@@ -7,8 +7,8 @@ nav_icon: material/robot-industrial
 
 <h1 class="tr-sr-only">Try in Simulator</h1>
 
-<div class="tr-demo" markdown="0"><iframe src="https://twinrobo.github.io/TwinRobo-Preview/" title="TwinRobo Preview" loading="lazy" allow="fullscreen"></iframe></div>
-<p class="tr-demo-cap"><a href="https://twinrobo.github.io/TwinRobo-Preview/" target="_blank" rel="noopener">Open full screen</a> · <a href="https://github.com/TwinRobo/TwinRobo-Preview" target="_blank" rel="noopener">TwinRobo-Preview</a> (precomputed with TwinRobo Studio; runs in the browser)</p>
+<div class="tr-demo" markdown="0"><iframe src="https://twinrobo.github.io/TwinRobo-Preview/vla/" title="TwinRobo Preview" loading="lazy" allow="fullscreen"></iframe></div>
+<p class="tr-demo-cap"><a href="https://twinrobo.github.io/TwinRobo-Preview/vla/" target="_blank" rel="noopener">Open full screen</a> · <a href="https://github.com/TwinRobo/TwinRobo-Preview" target="_blank" rel="noopener">TwinRobo-Preview</a> (precomputed with TwinRobo Studio; runs in the browser)</p>
 
 [Try TwinRobo Studio live](https://ai4optics.com/twinrobo/studio){ .md-button .md-button--primary }
 
