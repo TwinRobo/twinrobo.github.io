@@ -9,11 +9,18 @@ practical speeds.
 
     ```bash
     conda create -n twinrobo python=3.12 -y && conda activate twinrobo
-    pip install "twinrobo-core[mujoco] @ git+https://github.com/TwinRobo/TwinRobo-Core@v0.1.0"
+    pip install "twinrobo-core[mujoco]"   # TwinRobo, DeepLens, MuJoCo and NVIDIA Warp
     ```
 
-    [Release notes](https://github.com/TwinRobo/TwinRobo-Core/releases/tag/v0.1.0). Not on
-    PyPI: DeepLens is installed from its pinned commit.
+    With Isaac Sim 6.1 instead (Ubuntu 22.04 or later; in an environment of its own, since
+    Isaac Sim brings its own MuJoCo):
+
+    ```bash
+    pip install "twinrobo-core[isaac]" --extra-index-url https://pypi.nvidia.com
+    ```
+
+    From [PyPI](https://pypi.org/project/twinrobo-core/);
+    [release notes](https://github.com/TwinRobo/TwinRobo-Core/releases/tag/v0.1.0).
 
 === "From a checkout"
 
@@ -29,8 +36,8 @@ practical speeds.
 !!! note "Other simulators"
     LIBERO itself is used from a checkout (`LIBERO_ROOT`). RoboCasa needs
     robosuite 1.5 and gets its own environment ([details](simulators.md#robocasa)).
-    Isaac Sim runs in NVIDIA's container, with TwinRobo on Isaac's own Python and
-    torch ([details](simulators.md#running-in-docker)):
+    Isaac Sim installs from PyPI (above) or runs in NVIDIA's container, with TwinRobo on
+    Isaac's own Python and torch ([details](simulators.md#installing-isaac-sim)):
 
     ```bash
     docker pull nvcr.io/nvidia/isaac-sim:6.1.0        # needs the NVIDIA Container Toolkit

@@ -166,12 +166,28 @@ cam.close()                                   # removes what it added to the sta
     3 m) match the exact coverage computed from the traced rays to ~0.03;
     pinhole + PSF errs by ~0.13.
 
-### Running in Docker
+### Installing Isaac Sim
 
-Isaac Sim ships its own Python 3.12 and torch (2.11 in 6.1), and DeepLens pins
-torch 2.10, so a plain `pip install` would pull a second torch. The image in
-`docker/isaac/` installs DeepLens without dependencies on Isaac's torch (tested
-with Isaac Sim 6.1.0 on an RTX 3090):
+From PyPI, Isaac Sim 6.1 and TwinRobo in one environment (Python 3.12, Ubuntu 22.04 or
+later; one of Isaac Sim's packages comes from NVIDIA's index):
+
+```bash
+conda create -n twinrobo-isaac python=3.12 -y && conda activate twinrobo-isaac
+pip install "twinrobo-core[isaac]" --extra-index-url https://pypi.nvidia.com
+git clone https://github.com/TwinRobo/TwinRobo-Core.git   # for the examples
+OMNI_KIT_ACCEPT_EULA=YES python TwinRobo-Core/examples/01_isaac_camera.py \
+    --out outputs/isaac_camera.png   # the variable accepts NVIDIA's license
+```
+
+This brings torch 2.11 with Isaac Sim, and Isaac Sim's own MuJoCo (3.11), so keep it apart
+from the `mujoco` extra (3.3.2).
+
+#### Running in Docker
+
+The NVIDIA Isaac Sim image ships its own Python 3.12 and torch (2.11 in 6.1) in extension
+folders that pip does not see, so a plain `pip install` there would pull a second torch.
+The image in `docker/isaac/` installs DeepLens without dependencies on Isaac's torch
+(tested with Isaac Sim 6.1.0 on an RTX 3090):
 
 ```bash
 docker pull nvcr.io/nvidia/isaac-sim:6.1.0   # needs the NVIDIA Container Toolkit
