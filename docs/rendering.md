@@ -59,12 +59,13 @@ stereo SDKs deliver.
 
 ## Rendering methods
 
-Each TwinRobo camera picks how its image is formed, per `MujocoCameraTwin`.
+Each TwinRobo camera picks how its image is formed, per `MujocoCameraTwin` or
+`IsaacCameraTwin`.
 
 | Method | How | Per frame, 1920×1200 (RTX 3090) | Gets right |
 |---|---|---|---|
 | `psf` (default) | pinhole render + depth- and field-dependent PSF blur (2.5D) | ~0.1–0.4 s | blur of what the pinhole sees |
-| `raycast` | every pixel's rays traced through the real lens (DeepLens) and intersected with the scene's triangles on the GPU (NVIDIA Warp BVH); each hit shaded from a view rendered across the pupil that sees it | ~0.9 s | defocus across the aperture, chromatic aberration, vignetting, with exact per-ray visibility (see-through around defocused foreground) |
+| `raycast` | every pixel's rays traced through the lens (DeepLens) and intersected with the scene's triangles on the GPU (NVIDIA Warp BVH); each hit shaded from a view rendered across the pupil that sees it | ~0.9 s | defocus across the aperture, chromatic aberration, vignetting, with exact per-ray visibility (see-through around defocused foreground) |
 
 ```python
 from twinrobo.plugins.mujoco import MujocoCameraTwin
@@ -90,8 +91,8 @@ frame = cam.get_frame()  # frame.metadata has the render stats
   - Brightness is a separate, densely traced relative-illumination map, so a
     few rays per pixel don't turn vignetting into noise. Strongly vignetted
     pixels are retraced with 4x candidates.
-- **Shading is the simulator's own** (no PBR). The shading views
-  (`pupil_views`) are MuJoCo rasterizations from points on the entrance pupil,
+- **Shading is the simulator's own**: MuJoCo rasterization or Isaac RTX. The shading
+  views (`pupil_views`) are rendered from points on the entrance pupil,
   and hits look up colors there with depth-aware filtering.
 - **Lens shading:** `corrected` (default) is what a camera ISP outputs after
   lens-shading correction; `raw` keeps the sensor's vignetting and cos^4 falloff.
@@ -128,5 +129,5 @@ frame = cam.get_frame()  # frame.metadata has the render stats
 At 1920x1200 with 16 layers and a 17x11 PSF grid on an RTX 3090, the PSF
 renderer takes about 470 ms when all 16 depth layers are occupied (a ground
 plane does that) and about 40 ms for a single plane. The cost scales with the
-number of occupied layers. Levers not yet explored: layer/tile sparsity, fewer
-blurred alpha channels, low-rank PSF bases.
+number of occupied layers, and empty layers are skipped. Levers not yet explored: tile
+sparsity, fewer blurred alpha channels, low-rank PSF bases.

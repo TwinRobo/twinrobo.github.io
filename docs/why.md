@@ -68,5 +68,6 @@ green frame marks a completed task, a red one the time limit.
 - These are simulation results: they measure the gap between the pinhole a
   policy is trained on and a real camera's optics, not every source of
   sim-to-real difference.
-- A second pass, which keeps LIBERO's field of view and applies only each real
-  camera's lens, will separate framing from optics.
+- An optics-only pass keeps LIBERO's vertical field of view and applies each real camera's
+  lens: see [Results](benchmark/results.md). It covers a few cameras so far, at 40-48
+  episodes each.

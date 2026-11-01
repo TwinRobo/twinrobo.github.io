@@ -1,6 +1,9 @@
 """Render the playground's Isaac Sim scene through every catalog camera and method.
 
-    docker/isaac/run.sh tools/docs/playground/render_isaac.py   # -> outputs/isaac/playground
+    python tools/docs/playground/render_isaac.py   # -> outputs/isaac/playground
+
+Run it in an Isaac Sim environment with this checkout: Core's docker/isaac/run.sh mounts only
+Core.
 
 A tabletop generated from a fixed seed: random primitives (boxes, spheres,
 cylinders, cones) on a checkered table top that makes the lenses' distortion easy to

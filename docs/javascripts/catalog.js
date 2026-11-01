@@ -4,7 +4,7 @@
   const VIEWS = { compare: "Slider", side: "Side by side", diff: "Difference" };
   const METHODS = { psf: "PSF", raycast: "Ray cast" };  // short labels for the bar
   const OUTPUTS = {
-    raw: ["Raw sensor", "The image as the sensor records it: the lens' distortion, blur and vignetting"],
+    raw: ["Unrectified", "The image before undistortion: the lens' distortion and blur, not a Bayer raw image"],
     cal: ["Calibrated", "Undistorted with the camera's calibration, as a stereo SDK rectifies its streams; the lens blur stays"],
   };
   const KEY = "tr-catalog";
@@ -104,7 +104,7 @@
         const thumb = v ? el("img", { src: url(v, image()), alt: "", loading: "lazy" }) : el("span", { class: "trc-nothumb" });
         const text = el("span", { class: "trc-text" });
         text.append(el("b", {}, c.product || c.id),
-          el("small", {}, [`${c.width}×${c.height}`, c.fov && `${fmt(c.fov[0], 0)}° H`, c.mono ? "mono" : null]
+          el("small", {}, [`${c.width}×${c.height}`, c.fov && `${fmt(c.fov[0], 0)}° H, pinhole`, c.mono ? "mono" : null]
             .filter(Boolean).join(" · ")));
         b.append(thumb, text);
         if (c.nir) b.append(el("span", { class: "trc-badge is-ir", title: "Near-infrared camera" }, "IR"));

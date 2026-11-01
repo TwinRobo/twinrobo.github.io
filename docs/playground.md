@@ -16,7 +16,7 @@ nav_icon: material/robot-industrial
 
 Every catalog camera works in every simulator below, with every rendering
 method: **PSF** (the simulator's pinhole render, blurred and distorted by the
-lens; fastest) and **ray cast** (every pixel traced through the real lens;
+lens; fastest) and **ray cast** (every pixel traced through the lens;
 occlusion-aware blur, the lens' own distortion).
 
 | Simulator | What you get | Environment | Methods |
@@ -28,7 +28,7 @@ occlusion-aware blur, the lens' own distortion).
 
 Each adapter renders the simulator's camera at the twin's resolution and field
 of view, from the same pose, and returns a `CameraFrame` (`frame.rgb`, linear, on
-the GPU). Pass `render="raycast"` to trace the real lens.
+the GPU). Pass `render="raycast"` to trace the lens.
 
 === "MuJoCo"
 

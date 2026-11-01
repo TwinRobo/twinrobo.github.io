@@ -1,8 +1,8 @@
 name: Site
 
 # Builds the TwinRobo website (MkDocs) with TwinRobo-Core checked out beside it (its
-# catalog, contributing and license texts, and the API reference come from its source),
-# and publishes it to GitHub Pages. It rebuilds daily, so changes in TwinRobo-Core show up
+# catalog, contributing and license texts come from its source), and publishes it to GitHub
+# Pages. The API reference is built from TwinRobo-Core on Read the Docs. It rebuilds daily, so changes in TwinRobo-Core show up
 # without a commit here; run it by hand (workflow_dispatch) for an immediate rebuild.
 on:
   push:
@@ -37,9 +37,7 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
-      # The API reference is read from the source (griffe); nothing is imported,
-      # so neither DeepLens nor any simulator is installed here.
-      - run: pip install "mkdocs>=1.6,<2" "mkdocs-material>=9.5" "mkdocstrings[python]>=0.26" "mkdocs-gen-files>=0.5" pyyaml
+      - run: pip install "mkdocs>=1.6,<2" "mkdocs-material>=9.5" "mkdocs-gen-files>=0.5" pyyaml
       - run: mkdocs build --strict
       - uses: actions/upload-pages-artifact@v3
         if: github.event_name != 'pull_request'

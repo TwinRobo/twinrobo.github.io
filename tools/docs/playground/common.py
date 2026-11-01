@@ -1,7 +1,7 @@
 """Shared by the playground renderers: which cameras, at which size, and how outputs are saved.
 
 Each renderer writes, per scene, into ``<staging>/<scene>/``:
-``<camera>/<method>.png`` (the camera's raw sensor image, sRGB),
+``<camera>/<method>.png`` (the camera's unrectified image, sRGB),
 ``<camera>/<method>-cal.png`` (the same image calibrated: undistorted to the camera's
 pinhole, the lens blur kept, as vendor SDKs rectify), ``<camera>/pinhole.png`` (the
 simulator's pinhole at the same field of view), ``<camera>/depth.npy`` (metric z-depth)

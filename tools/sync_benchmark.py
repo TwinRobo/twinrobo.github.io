@@ -11,6 +11,7 @@ and commit the page after the benchmark's results change.
 from __future__ import annotations
 
 import argparse
+import datetime
 import re
 import shutil
 import subprocess
@@ -23,8 +24,8 @@ BANNER = """# Results
 
 !!! warning "Simulation only: these rank digital twins, not yet the real cameras"
     Every catalog lens is a surrogate (a published design scaled to the camera's focal
-    length and f-number; vendors publish no prescriptions), and sensor noise is not
-    simulated. The main tables put each camera on the robot's wrist; the third-person
+    length and f-number; vendors publish no prescriptions), and these runs do not
+    simulate sensor noise. The main tables put each camera on the robot's wrist; the third-person
     tables below them are secondary (LIBERO's agent-view camera is not on the robot).
     Grounding partly reflects how the model handles each image's size and aspect. See
     [Findings](index.md).
@@ -50,10 +51,11 @@ def main() -> None:
     body = re.sub(r"\nRebuild: `\./run_all\.sh`.*\Z", "\n", body, flags=re.S)
     body = body.replace("(closed loop; `src/vla`)", "(closed loop)")
     body = re.sub(r"^### ", "## ", body, flags=re.M)  # the condition tables are sections here
+    dirty = git(a.bench, "status", "--porcelain", "--", "results", "src/bench")
     head = BANNER.format(
-        bench=git(a.bench, "rev-parse", "--short", "HEAD"),
+        bench=git(a.bench, "rev-parse", "--short", "HEAD") + ("+dirty" if dirty else ""),
         core=core.group(1).strip() if core else "?",
-        date=git(a.bench, "log", "-1", "--format=%cs"),
+        date=datetime.datetime.now(datetime.UTC).date().isoformat(),
     )
     if re.search(r"/home/|shij0c", body):
         raise SystemExit("the report names a local path: fix the benchmark's report first")

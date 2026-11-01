@@ -5,6 +5,17 @@
 TwinRobo needs **Python 3.12** (inherited from DeepLens) and a CUDA GPU for
 practical speeds.
 
+=== "From a checkout"
+
+    For development, and for the LIBERO support:
+
+    ```bash
+    git clone https://github.com/TwinRobo/TwinRobo-Core.git && cd TwinRobo-Core
+    conda create -n twinrobo python=3.12 -y && conda activate twinrobo
+    pip install -e ".[dev]"          # core + DeepLens
+    pip install -e ".[libero]"       # + MuJoCo, NVIDIA Warp and LIBERO support
+    ```
+
 === "Release (v0.1.0)"
 
     ```bash
@@ -21,17 +32,6 @@ practical speeds.
 
     From [PyPI](https://pypi.org/project/twinrobo-core/);
     [release notes](https://github.com/TwinRobo/TwinRobo-Core/releases/tag/v0.1.0).
-
-=== "From a checkout"
-
-    For development, and for the LIBERO support:
-
-    ```bash
-    git clone https://github.com/TwinRobo/TwinRobo-Core.git && cd TwinRobo-Core
-    conda create -n twinrobo python=3.12 -y && conda activate twinrobo
-    pip install -e ".[dev]"          # core + DeepLens
-    pip install -e ".[libero]"       # + MuJoCo, NVIDIA Warp and LIBERO support
-    ```
 
 !!! note "Other simulators"
     LIBERO itself is used from a checkout (`LIBERO_ROOT`). RoboCasa needs
@@ -86,28 +86,58 @@ The first call builds the lens's PSF bank with DeepLens (about 20 s on a GPU)
 and caches it; after that a frame takes a fraction of a second. The mount moves
 with the link, so it follows the robot as it acts or replays a demo.
 
-`examples/05_mount_camera_on_robot.py` does this for three catalog cameras on
+`examples/05_mount_camera_on_robot.py` does this for two catalog cameras on
 the same wrist mount:
 
 ```bash
 MUJOCO_GL=egl python examples/05_mount_camera_on_robot.py   # writes outputs/05_mount_camera.jpg
 ```
 
-![Three catalog cameras on the same wrist mount: pinhole vs TwinRobo image, close-up, difference and depth](images/quickstart_cameras.jpg)
+![Two catalog cameras on the same wrist mount: pinhole vs TwinRobo image, close-up, difference and depth](images/quickstart_cameras.jpg)
 
 - **Simulator pinhole / TwinRobo camera:** each lens's own field of view. The
   ZED X 2.2 mm's wide lens shows its barrel distortion, which a pinhole cannot.
-- **Close-up:** the same patch at native resolution; the real lens softens the
+- **Close-up:** the same patch at native resolution; the traced lens softens the
   lettering, as the camera would.
 - **Difference ×4:** where the optics change the image.
 - **Ground-truth depth:** the simulator's metric z-depth, aligned pixel for pixel with the
   camera's image; a label for training, not an output of the camera (`force_depth=True`).
 
-## Next steps
+## Switch the sensor and ISP
+
+The image above comes from the lens alone. Add a camera's sensor and ISP, and you also get its
+auto-exposure, noise, white balance and color. Here the Raspberry Pi Camera 3 uses its own
+tuning, then another sensor's, then an ISP of your own:
+
+```python
+from twinrobo.isp import ISPModel, list_tunings
+from twinrobo.isp.color import srgb_to_linear
+
+path = CatalogRegistry().resolve("raspberrypi/camera-module-3/standard")
+twin = CameraTwin.from_spec(CameraSpec.from_yaml(path, width=960, height=540), isp=True)
+print(list_tunings())                # the sensors you can switch to
+
+class Gamma(ISPModel):               # your own ISP
+    def process(self, raw, metadata=None):
+        return srgb_to_linear(raw.clamp(0, 1) ** 0.8)
+
+twin.set_isp("imx477")               # from the next frame; the lens render is kept
+twin.set_isp(Gamma())
+twin.set_isp(True)                   # back to the camera's own
+```
+
+Render with `MujocoCameraTwin(twin, ...)` as above. `frame.metadata["pipeline"]` records which
+sensor and ISP made each frame. Another sensor's tuning on this lens is a hybrid that models no
+real camera, and these ISPs have not been compared with a real camera yet.
+[Sensor and ISP](sensor-isp.md) has the details and limits.
+
+<a id="next-steps"></a>
+
+## Try next
 
 <div class="grid cards" markdown>
 
--   :material-ray-start-arrow: __Trace real lens rays__
+-   :material-ray-start-arrow: __Trace lens rays__
 
     Pass `render="raycast"` to `MujocoCameraTwin`.
     [Rendering methods](rendering.md#rendering-methods)
@@ -121,6 +151,11 @@ MUJOCO_GL=egl python examples/05_mount_camera_on_robot.py   # writes outputs/05_
 
     `CameraTwinLiberoEnv` swaps observations in place; eval scripts run
     unchanged. [LIBERO](simulators.md#libero)
+
+-   :material-tune: __Your own ISP__
+
+    Switch tunings between frames, or plug in your own ISP.
+    [Sensor and ISP](sensor-isp.md)
 
 -   :material-camera-plus: __Your own camera__
 

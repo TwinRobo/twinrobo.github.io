@@ -80,18 +80,10 @@ nav:
   - Learn:
       - Optics and rendering: rendering.md
       - Cameras and stereo: cameras.md
+      - Sensor and ISP: sensor-isp.md
       - Simulators: simulators.md
       - Calibrate a real camera: calibration.md
-  - API reference:
-      - api/index.md
-      - Core: api/core.md
-      - Optics: api/optics.md
-      - Sensor and ISP: api/sensor_isp.md
-      - MuJoCo: api/mujoco.md
-      - Isaac Sim: api/isaac.md
-      - LIBERO and RoboCasa: api/robot_learning.md
-      - Calibration: api/calibration.md
-      - Validation: api/validation.md
+  - API reference: https://twinrobo-core.readthedocs.io/en/latest/
   - Benchmark:
       - benchmark/index.md
       - Results: benchmark/results.md
@@ -110,26 +102,7 @@ plugins:
   - search
   - gen-files:
       scripts:
-        - tools/docs/gen_pages.py   # home (README), contributing, camera catalog
-  - mkdocstrings:
-      default_handler: python
-      handlers:
-        python:
-          paths: [!ENV [TWINROBO_CORE, core]]   # TwinRobo-Core's source (see README)
-          options:
-            docstring_style: google
-            show_root_heading: true
-            show_root_full_path: false
-            show_source: false
-            show_signature_annotations: true
-            separate_signature: true
-            signature_crossrefs: true
-            members_order: source
-            merge_init_into_class: true
-            filters: ["!^_"]
-            heading_level: 2
-            show_symbol_type_heading: true
-            show_symbol_type_toc: true
+        - tools/docs/gen_pages.py   # contributing, CLA, license, camera catalog
 
 hooks:
   - tools/docs/hooks.py   # repo-relative links (GitHub) -> site links

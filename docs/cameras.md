@@ -26,6 +26,24 @@ The full list, with each entry's sensor, lens and field of view, is the
 | Logitech | C920 HD Pro Webcam | |
 | Raspberry Pi | Camera Module 3, Camera Module 3 Wide | |
 
+## One API for every twin
+
+A camera, a stereo pair, a lidar and a whole device all work the same way: create it,
+`attach` it to a simulator, then `capture`.
+
+```python
+from twinrobo import StereoTwin
+from twinrobo.plugins.mujoco import MujocoRenderer
+
+twin = StereoTwin.from_catalog("stereolabs/zed-x/2.2mm")
+rig = twin.attach(MujocoRenderer(model, data), camera="wrist")
+obs = rig.capture()
+obs["left"].rgb, obs["right"].rgb
+```
+
+`CameraTwin`, `StereoTwin`, `LidarTwin` and `DeviceTwin` are in the
+[API reference](api/index.md).
+
 ## Depth output
 
 TwinRobo simulates what cameras **image**. It does not yet simulate what depth
@@ -63,8 +81,9 @@ eye's frame (the baseline), the housing size and the default output
 A module is placed as one unit by its left eye's pose and renders as two
 cameras, `<name>_L` and `<name>_R`, that move together. With `rectify` (per
 camera config) the output is undistorted to the pinhole with the eye's
-intrinsics, keeping the lens blur, so the pair is row-aligned for stereo
-matching.
+intrinsics, keeping the lens blur. That row-aligns parallel eyes with matching
+intrinsics and a horizontal baseline, as in the bundled modules. It is not general stereo
+rectification for rotated eyes or differing intrinsics.
 
 | Module | Baseline | Eyes |
 |---|---|---|
@@ -106,7 +125,8 @@ Every number and its source is recorded in the entry's header. To reach
 ## Your own cameras
 
 Copy a spec, point `lens.deeplens_model.path` at a DeepLens lens file, and set
-the sensor and focus. To reconfigure an existing camera without editing its
+the sensor and focus. To reuse a bundled lens without copying it, use a catalog reference
+such as `catalog:stereolabs/zed-x/2.2mm/lens.json`. To reconfigure an existing camera without editing its
 file, pass overrides when loading it:
 
 ```python

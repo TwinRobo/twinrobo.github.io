@@ -4,7 +4,7 @@
 early, and increasingly in simulation: they train perception and policies on
 simulated images before they buy hardware. A camera in the TwinRobo catalog is
 one those teams can evaluate, train with and deploy in MuJoCo, LIBERO, RoboCasa
-and Isaac Sim, rendered through its real optics.
+and Isaac Sim, rendered through a physically traced surrogate of its optics.
 
 The TwinRobo Camera Partner program is for camera and lens makers who want
 their products represented accurately, and for companies who want to sponsor

@@ -39,6 +39,8 @@
         {% elif pages %}
           {#- a section with its own index page (e.g. the API reference): a plain link -#}
           <a href="{{ pages[0].url | url }}" class="tr-nav__item tr-nav__link{% if item.active %} is-active{% endif %}">{{ item.title }}</a>
+        {% elif item.is_link %}
+          <a href="{{ item.url }}" class="tr-nav__item tr-nav__link">{{ item.title }}</a>
         {% elif item.is_page and not item.is_homepage %}
           <a href="{{ item.url | url }}" class="tr-nav__item tr-nav__link{% if item.active %} is-active{% endif %}">{{ item.title }}</a>
         {% endif %}

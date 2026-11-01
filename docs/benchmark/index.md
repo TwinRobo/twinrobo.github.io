@@ -72,8 +72,9 @@ Mistakes are the models' own (a plate called a cookie box, the gripper called a 
 
 ### On the wrist, a wider camera finds more objects
 
-Close above the table, a narrow camera cuts objects out of its frame. The widest camera
-in the catalog finds the most, the narrowest the least:
+Close above the table, a narrow camera cuts objects out of its frame. The widest camera,
+the ZED X 2.2 mm, finds the most. The order does not follow field of view exactly: the OAK-D
+mono scores lowest.
 
 ![Detection at the wrist per camera, on the wrist and optics only, with 95 % intervals](figures/detection.png#only-light)
 ![Detection at the wrist per camera, on the wrist and optics only, with 95 % intervals](figures/detection-dark.png#only-dark)
@@ -129,8 +130,9 @@ differences between real lenses are not expected to show yet.
 
 ## Limits
 
-- **Simulation only.** Lenses are surrogates; sensor noise, exposure and motion blur are
-  not simulated. The results rank digital twins.
+- **Simulation only.** Lenses are surrogates. These runs have no sensor noise, exposure or
+  motion blur (the [tuned sensor and ISP](../sensor-isp.md) were not used). The results rank
+  digital twins.
 - **Models with limits at the wrist.** Depth Pro's metric scale fails at 0.1-0.4 m (errors of
   56-111 % for every camera, the reference included), so it is left out of the wrist results.
   Qwen2.5-VL's boxes are compressed sideways by 2-3 % on some image sizes.
@@ -143,8 +145,9 @@ differences between real lenses are not expected to show yet.
 
 1. **Real captures:** the fiducial and detection tests with the real cameras on a robot
    arm, compared with their twins' ranking.
-2. **Measured lenses** for a few cameras (the [calibration tool](../calibration.md)) and
-   the sensor noise model, so lens and low-light differences can show.
+2. **Measured lenses** for a few cameras (the [calibration tool](../calibration.md)), and
+   runs with the [tuned sensor and ISP](../sensor-isp.md), so lens and low-light differences
+   can show.
 3. **A robot policy** run with each camera on its wrist.
 
 The benchmark's code will be released with the real-capture study.

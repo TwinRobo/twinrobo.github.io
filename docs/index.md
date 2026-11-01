@@ -12,8 +12,8 @@ hide:
 # See through the camera <span class="tr-grad">you will deploy</span>
 
 <p class="tr-lead">Simulators render through a perfect pinhole; robots see through real lenses.
-TwinRobo renders simulated scenes through the actual optics of off-the-shelf cameras,
-so perception trained in simulation meets the same image on the robot.
+TwinRobo renders simulated scenes through physically traced surrogate optics of off-the-shelf cameras,
+so perception trained in simulation meets a closer match to the image on the robot.
 <a class="tr-why-link" href="why/">See why TwinRobo?</a></p>
 
 [Try it live](live.md){ .md-button .md-button--primary }
@@ -22,7 +22,7 @@ so perception trained in simulation meets the same image on the robot.
 
 <div class="tr-compare tr-compare--hero" style="--pos: 50%">
   <img src="assets/home/compare-camera.webp" width="640" height="400"
-       alt="A robot's wrist camera over a bin of groceries, through a real camera's lens (ray-traced)">
+       alt="A robot's wrist camera over a bin of groceries, through a simulated camera's lens (ray-traced)">
   <img class="tr-compare__top" src="assets/home/compare-pinhole.webp"
        width="640" height="400" alt="The same view through the simulator's pinhole">
   <span class="tr-compare__tag tr-compare__tag--left">Pinhole</span>
@@ -32,28 +32,30 @@ so perception trained in simulation meets the same image on the robot.
 </div>
 
 <p class="tr-caption">Drag to compare: a robot's wrist camera in MuJoCo, the same frame, pose and field of
-view, through the simulator's pinhole and through a real camera's lens.</p>
+view, through the simulator's pinhole and through a simulated camera's lens.</p>
 
 </div>
 
 <div class="tr-why" markdown>
 
-## Change the camera, and a robot policy drops from <span class="tr-grad">85 % to 0 %</span>
+## Change the camera, and a robot policy can drop from <span class="tr-grad">85 % to 0 %</span>
 
 <p class="tr-lead">OpenVLA solves 85 % of its LIBERO tasks through the pinhole camera it was
-trained with, and none through a real camera placed where that pinhole was. TwinRobo shows
-you that before your robot does. <a class="tr-why-link" href="benchmark/">See the benchmark</a></p>
+trained with, and none through a simulated RealSense D455 or ZED X 2.2 mm placed where that
+pinhole was. Others barely change it: 87 % through a D435, 84 % through a C920. With the vertical
+field of view matched and distortion removed, the D455 and ZED X return to 83 % and 85 %. TwinRobo
+shows you which cameras matter before your robot does. <a class="tr-why-link" href="benchmark/">See the benchmark</a></p>
 
 <figure class="tr-hero-video">
   <video autoplay muted loop playsinline preload="metadata" poster="assets/home/hero-poster.jpg"
-         aria-label="The same robot task through a pinhole camera, where the policy succeeds, and through a real camera, where it fails">
+         aria-label="The same robot task through a pinhole camera, where the policy succeeds, and through a simulated RealSense D455, where it fails">
     <source src="assets/home/hero.mp4" type="video/mp4">
   </video>
 </figure>
 
 <p class="tr-caption">OpenVLA on the same LIBERO task from the same start, seen through its own
-(third-person) camera: through the simulator's pinhole it succeeds (left); through a real camera
-at the same place it fails (right).</p>
+(third-person) camera: through the simulator's pinhole it succeeds (left); through a simulated
+RealSense D455 at the same place it fails (right).</p>
 
 </div>
 
@@ -61,7 +63,7 @@ at the same place it fails (right).</p>
 
 <div class="grid cards tr-2col" markdown>
 
--   :material-camera-iris:{ .lg .middle } __Real lens optics__
+-   :material-camera-iris:{ .lg .middle } __Traced lens optics__
 
     ---
 
@@ -102,6 +104,9 @@ at the same place it fails (right).</p>
 
 </div>
 
+**Switch the ISP.** Use a camera's measured tuning, swap in another sensor's, or plug in your
+own ISP, and change it between frames. [Sensor and ISP](sensor-isp.md)
+
 ## Support at a glance
 
 | | MuJoCo (incl. LIBERO, RoboCasa) | NVIDIA Isaac Sim 6.x |
@@ -110,6 +115,7 @@ at the same place it fails (right).</p>
 | `psf`: pinhole + lens blur and distortion | :material-check-bold: | :material-check-bold: |
 | `raycast`: lens rays cast into the scene | :material-check-bold: | :material-check-bold: |
 | RGB on the GPU, ground-truth depth on request | :material-check-bold: | :material-check-bold: |
+| Tuned, custom and switchable [ISPs](sensor-isp.md) | :material-check-bold: | :material-check-bold: |
 | Cameras on robot links, stereo modules | :material-check-bold: | any USD camera prim |
 | Setup | `pip install` | Docker recipe included |
 

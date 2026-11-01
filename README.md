@@ -1,19 +1,19 @@
 # twinrobo.github.io
 
-The TwinRobo website: documentation, camera catalog, API reference and the camera
-benchmark, published at **https://twinrobo.github.io/**. The code lives in
-[TwinRobo-Core](https://github.com/TwinRobo/TwinRobo-Core).
+The TwinRobo website: documentation, camera catalog and the camera benchmark, published at **https://twinrobo.github.io/**. The code lives in
+[TwinRobo-Core](https://github.com/TwinRobo/TwinRobo-Core); the API reference is built there and
+hosted at https://twinrobo-core.readthedocs.io/.
 
 ## How it is built
 
 MkDocs (Material) with TwinRobo-Core checked out beside it: the camera catalog page,
-the contributing, CLA and license pages, and the API reference are generated from
+and the contributing, CLA and license pages are generated from
 Core's source at build time, so they follow Core without edits here.
 `.github/workflows/pages.yml` builds on every push, daily, and by hand (Actions → Site →
 Run workflow), and publishes to GitHub Pages.
 
 ```bash
-pip install "mkdocs>=1.6,<2" "mkdocs-material>=9.5" "mkdocstrings[python]>=0.26" "mkdocs-gen-files>=0.5" pyyaml
+pip install "mkdocs>=1.6,<2" "mkdocs-material>=9.5" "mkdocs-gen-files>=0.5" pyyaml
 TWINROBO_CORE=../TwinRobo-Core mkdocs serve      # or: git clone TwinRobo-Core into core/
 ```
 

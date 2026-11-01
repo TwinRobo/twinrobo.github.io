@@ -2,13 +2,13 @@
 
 !!! warning "Simulation only: these rank digital twins, not yet the real cameras"
     Every catalog lens is a surrogate (a published design scaled to the camera's focal
-    length and f-number; vendors publish no prescriptions), and sensor noise is not
-    simulated. The main tables put each camera on the robot's wrist; the third-person
+    length and f-number; vendors publish no prescriptions), and these runs do not
+    simulate sensor noise. The main tables put each camera on the robot's wrist; the third-person
     tables below them are secondary (LIBERO's agent-view camera is not on the robot).
     Grounding partly reflects how the model handles each image's size and aspect. See
     [Findings](index.md).
 
-Benchmark commit `da98e26` · TwinRobo-Core `075020f, 48bad68` · copied 2026-10-12.
+Benchmark commit `8394c16` · TwinRobo-Core `075020f, 48bad68` · copied 2026-11-01.
 
 ## On the robot: each camera replacing the robot's wrist camera
 
@@ -33,7 +33,7 @@ Where a robot's camera sits: on the wrist, close above the table and moving with
 
 ## On the robot, optics only (the wrist camera's 75 deg view, each camera's sensor and lens)
 
-Framing and distortion removed: what each sensor and lens (including its focus) add at the wrist.
+The wrist camera's vertical field of view, with distortion removed: what each sensor and lens (including its focus) add at the wrist. Each camera keeps its own aspect ratio, so its horizontal view still differs.
 
 | Camera | Status | Image (px) | HFoV (deg) | Detection mAP50 | Segmentation mIoU | Object depth AbsRel, DA-V2 (%) | VLM grounding hit (%) |
 |---|---|---|---|---|---|---|---|
@@ -114,7 +114,7 @@ depth and grounding scores are not what it would see in the infrared.
 
 - **Simulation only.** Every catalog lens is a surrogate (status `estimated`): a published
   glass design scaled to the camera's focal length and f-number, because vendors publish
-  no prescriptions. Sensor noise, colour filter, exposure and motion are not simulated.
+  no prescriptions. These runs do not simulate sensor noise, colour filter, exposure or motion.
   The table ranks the twins; whether it ranks the real cameras the same way is what the
   real-capture study is for.
 - **On the robot first.** The main tables put each camera where a robot's camera sits: in
@@ -188,27 +188,27 @@ Bootstrap over images (fixed seed); OpenVLA: Wilson interval over episodes.
 | Stereolabs ZED X / X Mini 2.2 mm eye · optics only | – | 63.1–68.0 | 93.7–94.6 | 5.2–5.9 | 23.9–28.9 | 63.7–69.2 | 70.9–92.9 |
 | Stereolabs ZED X 4 mm eye · optics only | – | 62.6–67.0 | 93.8–94.7 | 5.2–5.9 | 23.3–28.1 | 64.0–69.6 | – |
 | Stereolabs ZED 2i 2.1 mm eye · optics only | – | 62.3–66.4 | 94.0–94.8 | 5.6–6.2 | 22.3–27.2 | 67.6–72.5 | – |
-| Ideal pinhole (1024x1024, 75 deg) | – | 37.5–43.8 | 93.7–94.9 | 8.4–9.9 | 76.6–99.9 | 60.3–65.2 | 76.7–90.7 |
-| Intel RealSense D435 / D435i RGB camera | 49.5–77.8 | 31.6–38.3 | 92.5–93.8 | 7.1–9.8 | 77.6–100.0 | 56.8–62.5 | 79.0–92.2 |
-| Intel RealSense D455 RGB camera | 28.9–58.5 | 33.4–40.2 | 93.4–94.5 | 8.8–10.7 | 70.8–87.3 | 58.5–64.0 | 0.0–3.7 |
+| Ideal pinhole (1024x1024, 75 deg) | – | 37.5–43.8 | 93.7–94.9 | 8.4–9.9 | 76.6–99.9 | 60.3–65.2 | – |
+| Intel RealSense D435 / D435i RGB camera | 49.5–77.8 | 31.6–38.3 | 92.5–93.8 | 7.1–9.8 | 77.6–100.0 | 56.8–62.5 | – |
+| Intel RealSense D455 RGB camera | 28.9–58.5 | 33.4–40.2 | 93.4–94.5 | 8.8–10.7 | 70.8–87.3 | 58.5–64.0 | – |
 | Intel RealSense D435 / D435i IR imager (one stereo eye) | 30.0–60.1 | 31.3–38.0 | 93.8–94.9 | 8.3–10.9 | 49.7–62.3 | 50.0–55.7 | – |
 | Intel RealSense D455 IR imager (one stereo eye) | 30.0–60.1 | 31.3–38.0 | 93.8–94.9 | 8.3–10.9 | 49.7–62.3 | 49.8–55.6 | – |
-| Logitech C920 HD Pro Webcam | 51.5–79.3 | 33.3–40.5 | 91.9–93.4 | 7.5–9.8 | 85.9–106.6 | 59.2–65.0 | 75.6–89.9 |
+| Logitech C920 HD Pro Webcam | 51.5–79.3 | 33.3–40.5 | 91.9–93.4 | 7.5–9.8 | 85.9–106.6 | 59.2–65.0 | – |
 | Luxonis OAK-D color camera | 58.9–81.7 | 35.2–42.4 | 92.5–93.8 | 8.5–11.0 | 98.5–122.8 | 58.2–63.4 | – |
-| Luxonis OAK-D mono camera (one stereo eye) | 40.9–70.7 | 28.0–34.7 | 93.2–94.5 | 8.1–10.5 | 78.6–100.8 | 48.5–54.5 | 55.3–73.6 |
+| Luxonis OAK-D mono camera (one stereo eye) | 40.9–70.7 | 28.0–34.7 | 93.2–94.5 | 8.1–10.5 | 78.6–100.8 | 48.5–54.5 | – |
 | Raspberry Pi Camera Module 3 | 75.3–92.5 | 32.9–40.0 | 92.0–93.4 | 7.8–10.0 | 86.6–108.7 | 54.1–59.7 | – |
 | Raspberry Pi Camera Module 3 Wide | 58.0–82.8 | 36.6–42.6 | 93.4–94.5 | 9.9–13.0 | 69.0–84.2 | 59.2–65.0 | – |
-| Stereolabs ZED X / X Mini 2.2 mm eye | 33.4–62.4 | 39.2–44.7 | 93.7–94.6 | 11.0–13.3 | 90.1–105.7 | 62.3–67.2 | 0.0–3.7 |
-| Stereolabs ZED X 4 mm eye | 52.5–79.2 | 33.5–41.3 | 93.0–94.3 | 8.3–10.7 | 86.7–106.8 | 59.0–64.3 | 36.6–55.7 |
+| Stereolabs ZED X / X Mini 2.2 mm eye | 33.4–62.4 | 39.2–44.7 | 93.7–94.6 | 11.0–13.3 | 90.1–105.7 | 62.3–67.2 | – |
+| Stereolabs ZED X 4 mm eye | 52.5–79.2 | 33.5–41.3 | 93.0–94.3 | 8.3–10.7 | 86.7–106.8 | 59.0–64.3 | – |
 | Stereolabs ZED 2i 2.1 mm eye | 42.5–71.5 | 34.7–41.0 | 93.4–94.4 | 9.5–12.6 | 95.2–117.7 | 58.4–64.2 | – |
 | Intel RealSense D435 / D435i RGB camera · optics only | – | 37.8–43.4 | 93.4–94.4 | 10.5–12.8 | 63.1–75.9 | 58.2–63.7 | – |
-| Intel RealSense D455 RGB camera · optics only | – | 37.1–43.1 | 93.6–94.6 | 9.6–11.5 | 64.2–78.0 | 58.4–63.2 | 70.4–91.3 |
-| Logitech C920 HD Pro Webcam · optics only | – | 38.0–43.8 | 92.7–93.8 | 11.7–14.4 | 62.7–75.7 | 59.4–64.4 | 68.0–91.3 |
+| Intel RealSense D455 RGB camera · optics only | – | 37.1–43.1 | 93.6–94.6 | 9.6–11.5 | 64.2–78.0 | 58.4–63.2 | – |
+| Logitech C920 HD Pro Webcam · optics only | – | 38.0–43.8 | 92.7–93.8 | 11.7–14.4 | 62.7–75.7 | 59.4–64.4 | – |
 | Luxonis OAK-D color camera · optics only | – | 41.4–47.3 | 92.8–93.7 | 10.2–12.7 | 80.7–102.3 | 59.2–64.6 | – |
-| Luxonis OAK-D mono camera (one stereo eye) · optics only | – | 36.2–41.5 | 93.5–94.5 | 10.5–13.2 | 50.4–60.5 | 51.4–56.8 | 70.9–92.9 |
+| Luxonis OAK-D mono camera (one stereo eye) · optics only | – | 36.2–41.5 | 93.5–94.5 | 10.5–13.2 | 50.4–60.5 | 51.4–56.8 | – |
 | Raspberry Pi Camera Module 3 · optics only | – | 38.3–44.0 | 92.4–93.5 | 11.6–14.7 | 68.6–83.7 | 57.2–62.2 | – |
 | Raspberry Pi Camera Module 3 Wide · optics only | – | 37.8–43.7 | 93.6–94.6 | 11.1–13.8 | 63.1–76.6 | 58.5–63.5 | – |
-| Stereolabs ZED X / X Mini 2.2 mm eye · optics only | – | 37.9–43.7 | 93.7–94.7 | 9.8–11.9 | 64.2–77.9 | 58.8–63.7 | 70.9–92.9 |
+| Stereolabs ZED X / X Mini 2.2 mm eye · optics only | – | 37.9–43.7 | 93.7–94.7 | 9.8–11.9 | 64.2–77.9 | 58.8–63.7 | – |
 | Stereolabs ZED X 4 mm eye · optics only | – | 40.2–45.8 | 92.7–93.7 | 11.6–14.3 | 69.4–85.1 | 59.8–65.3 | – |
 | Stereolabs ZED 2i 2.1 mm eye · optics only | – | 37.5–43.5 | 93.5–94.5 | 10.8–13.2 | 63.2–76.0 | 58.2–63.0 | – |
 | Logitech C920 HD Pro Webcam · focus 0.3 m | – | – | – | 7.1–9.9 | 76.9–96.4 | – | – |

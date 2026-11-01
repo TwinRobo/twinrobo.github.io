@@ -16,7 +16,7 @@ twinrobo/          the SDK (simulator independent core + simulator adapters)
   optics/            DeepLensOptics, PSFBank/PSFCache, DenseDepthRenderer, LensRays,
                      RadialDistortion + DistortionWarp
   optics/lensrender.py  lens-ray rendering (ray cast), simulator independent
-  sensor/  isp/      interfaces + ideal pass-throughs
+  sensor/  isp/      interfaces, ideal pass-throughs, libcamera-tuned sensor and ISP
   calibration/       real-camera calibration -> measured catalog entries
   plugins/           simulator plugins, each importing its simulator lazily
     mujoco/          MujocoCameraTwin, render backends, camera mounts, MuJoCo lens scene
@@ -25,8 +25,11 @@ twinrobo/          the SDK (simulator independent core + simulator adapters)
     libero/          LIBERO env wrapper, robots and multi-camera variants, exact replay
     robocasa/        RoboCasa env setup and episode replay
   validation/        renderer vs reference
-examples/  tests/ (tests/plugins/, tests/datasets/ mirror the package)  tools/  docs/
+examples/  tests/ (tests/plugins/, tests/datasets/ mirror the package)  tools/
 ```
+
+The website and these pages live in
+[twinrobo.github.io](https://github.com/TwinRobo/twinrobo.github.io).
 
 ## Tests
 
@@ -61,8 +64,8 @@ pip install -e ".[dev]" --no-deps && pip install numpy pyyaml pytest ruff
 |---|---|
 | Optics: PSF renderer, distortion, lens-ray renderer (ray cast) | working, validated against DeepLens |
 | MuJoCo, LIBERO and RoboCasa adapters | working |
-| Camera catalog | Stereolabs ZED X family, `estimated` (datasheet geometry, surrogate lenses) |
-| Sensor noise and ISP models | interfaces with ideal pass-throughs |
+| Camera catalog | 12 cameras from five makers and seven stereo modules, all `estimated` (datasheet geometry, surrogate lenses) |
+| Sensor and ISP | tuned models from libcamera, custom ISPs and switching; not compared with a real camera yet |
 | Isaac Sim adapter | working (`psf`, `raycast`) |
 | Real-camera validation (`measured` catalog entries) | planned |
 
@@ -81,10 +84,14 @@ views (the site is static). After a change to the catalog or the renderers,
 render both scenes and rebuild the assets:
 
 ```bash
+# in the website checkout
 MUJOCO_GL=egl python tools/docs/playground/render_mujoco.py      # -> outputs/playground
-docker/isaac/run.sh tools/docs/playground/render_isaac.py        # -> outputs/isaac/playground
 python tools/docs/playground/assemble.py                         # -> docs/assets/playground
 ```
+
+Before assembling, run `tools/docs/playground/render_isaac.py` in an Isaac Sim environment
+with this checkout mounted, writing to `outputs/isaac/playground`. Core's `docker/isaac/run.sh`
+mounts only Core, so it cannot run this script unchanged.
 
 The [simulator demo](playground.md) is a separate static site,
 [TwinRobo-Preview](https://github.com/TwinRobo/TwinRobo-Preview): robot demos

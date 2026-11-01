@@ -26,7 +26,7 @@ METHODS = {
     "psf": "PSF bank",
     "raycast": "Ray cast",
 }
-OUTPUTS = {"raw": "Raw sensor", "cal": "Calibrated"}  # <method>.webp, <method>-cal.webp
+OUTPUTS = {"raw": "Unrectified", "cal": "Calibrated"}  # <method>.webp, <method>-cal.webp
 QUALITY = 82
 
 

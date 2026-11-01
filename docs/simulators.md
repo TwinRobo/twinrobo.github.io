@@ -16,6 +16,24 @@ TwinRobo pipeline. `MujocoCameraTwin(twin, backend, camera=...)` works with
 inside robosuite (a second `mujoco.Renderer` in a robosuite process corrupts
 robosuite's renders).
 
+### LiDAR
+
+Catalog lidars (Ouster, Velodyne, Hesai) ray cast into MuJoCo scenes. Mount one on a body:
+
+```python
+from twinrobo import LidarTwin
+from twinrobo.plugins.mujoco import MujocoRenderer
+
+lidar = LidarTwin.from_catalog("ouster/os1-64")
+rig = lidar.attach(MujocoRenderer(model, data), body="robot0_link7", pos=(0, 0, 0.1))
+frame = rig.capture()["lidar"]
+points = frame.points()   # XYZ returns in the sensor frame
+mask = frame.valid()      # which returns are valid
+times = frame.time_s      # the time of each column
+```
+
+FMCW lidars also give radial velocity: `rig.capture(next_qpos=q1, dt=0.05)`.
+
 ## LIBERO
 
 ```bash
@@ -44,7 +62,7 @@ obs = env.set_init_state(init_states[0])  # obs["agentview_image"] comes from th
   (`twinrobo.datasets.libero.replay`), so any camera can be placed in a recorded
   episode.
 - **Geometry:** the twin's frame is center-cropped to the observation's aspect
-  ratio and area-resized. `match_fov=False` keeps LIBERO's FoV and applies only
+  ratio and resized (antialiased bilinear). `match_fov=False` keeps LIBERO's FoV and applies only
   the optics.
 - **Robots:** besides the Franka Panda, robosuite's Sawyer, UR5e, KUKA iiwa,
   Kinova Jaco and Kinova Gen3 are registered for LIBERO scenes
@@ -135,14 +153,14 @@ cam.close()                                   # removes what it added to the sta
 - **GPU end to end:** annotator data is read as Warp arrays and viewed as torch
   tensors without a copy; depth is converted from stage units to meters.
 - **Rendering:** `get_frame()` renders a frame with
-  `rep.orchestrator.step` (the timeline is not advanced). In your own loop,
+  `rep.orchestrator.step`, with Replicator's default time step. In your own loop,
   after `world.step(render=True)`, call `get_frame(step=False)`.
   `rt_subframes` trades speed for less RTX ghosting after large motions.
 - **Near clip:** USD's default near clip is 1 scene unit, 1 m on a meter stage,
   which hides what a robot camera sees up close; the view uses
   `near_clip_m=0.01` instead.
 - **Ray casting:** `render="raycast"` traces every pixel's rays through the
-  real lens, as in MuJoCo:
+  lens, as in MuJoCo:
 
   ```python
   twin = CameraTwin.from_catalog("stereolabs/zed-x/2.2mm", build_psf=False)
@@ -217,12 +235,13 @@ shaders (about 2 minutes); later runs start in under a minute.
   Deforming meshes keep their first shape; point instancers are not ray cast;
   prims added after the first frame are not ray cast until a new
   `IsaacCameraTwin` is made.
-- The render is centered with square pixels, as in MuJoCo; an off-center
-  principal point in calibrated intrinsics is not rendered.
+- The simulator's pinhole is centered with square pixels, as in MuJoCo. An off-center
+  principal point works through the distortion warp and calibrated ray casting, but not
+  in direct, undistorted PSF rendering.
 
 ## Known constraints
 
-- DeepLens requires Python 3.12 and pins `torch`. Isaac Sim 6.x also targets
+- DeepLens requires Python 3.12 and accepts torch 2.10 or later. Isaac Sim 6.x also targets
   Python 3.12 and runs DeepLens on its own torch 2.11 (see above); older Isaac
   releases cannot import DeepLens.
 - LIBERO officially predates numpy 2; it works on this stack in the tests, but
