@@ -5,18 +5,7 @@
 TwinRobo needs **Python 3.12** (inherited from DeepLens) and a CUDA GPU for
 practical speeds.
 
-=== "From a checkout"
-
-    For development, and for the LIBERO support:
-
-    ```bash
-    git clone https://github.com/TwinRobo/TwinRobo-Core.git && cd TwinRobo-Core
-    conda create -n twinrobo python=3.12 -y && conda activate twinrobo
-    pip install -e ".[dev]"          # core + DeepLens
-    pip install -e ".[libero]"       # + MuJoCo, NVIDIA Warp and LIBERO support
-    ```
-
-=== "Release (v0.1.0)"
+=== "Release (v0.1.1)"
 
     ```bash
     conda create -n twinrobo python=3.12 -y && conda activate twinrobo
@@ -31,7 +20,18 @@ practical speeds.
     ```
 
     From [PyPI](https://pypi.org/project/twinrobo-core/);
-    [release notes](https://github.com/TwinRobo/TwinRobo-Core/releases/tag/v0.1.0).
+    [release notes](https://github.com/TwinRobo/TwinRobo-Core/releases/tag/v0.1.1).
+
+=== "From a checkout"
+
+    For development, and for the LIBERO support:
+
+    ```bash
+    git clone https://github.com/TwinRobo/TwinRobo-Core.git && cd TwinRobo-Core
+    conda create -n twinrobo python=3.12 -y && conda activate twinrobo
+    pip install -e ".[dev]"          # core + DeepLens
+    pip install -e ".[libero]"       # + MuJoCo, NVIDIA Warp and LIBERO support
+    ```
 
 !!! note "Other simulators"
     LIBERO itself is used from a checkout (`LIBERO_ROOT`). RoboCasa needs
